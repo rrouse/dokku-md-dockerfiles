@@ -6,11 +6,10 @@ if [[ ! -z "$1" ]]; then
     chown -R mysql:mysql /opt/mysql
     chmod -R 755 /opt/mysql
 fi
-mysqld_safe 
+mysqld_safe &
 
-until pids=$(pidof mysqld)
-do   
-    sleep 1
+until mysql -u root -pa_stronk_password  -e ";" ; do
+        sleep 5
 done
 
 if [[ ! -z "$1" ]]; then
