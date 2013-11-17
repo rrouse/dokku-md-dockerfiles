@@ -6,7 +6,13 @@ if [[ ! -z "$1" ]]; then
     chown -R mysql:mysql /opt/mysql
     chmod -R 755 /opt/mysql
 fi
-mysqld_safe & sleep 5
+mysqld_safe 
+
+until pids=$(pidof mysqld)
+do   
+    sleep 1
+done
+
 if [[ ! -z "$1" ]]; then
     echo "CREATE DATABASE db;" | mysql -u root --password=a_stronk_password
     echo "UPDATE mysql.user SET Password=PASSWORD('$1') WHERE User='root'; FLUSH PRIVILEGES;" | mysql -u root --password=a_stronk_password mysql
